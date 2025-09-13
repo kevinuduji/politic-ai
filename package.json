@@ -1,0 +1,30 @@
+{
+  "name": "politic-ai",
+  "version": "1.0.0",
+  "description": "a generative AI wrapper that can generate ai debates for controversial topics",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node src/index.js",
+    "test": "node test.js",
+    "example": "node example.js"
+  },
+  "keywords": [
+    "ai",
+    "debate",
+    "politics",
+    "controversial",
+    "generative"
+  ],
+  "author": "kevinuduji",
+  "license": "MIT",
+  "dependencies": {
+    "openai": "^4.0.0",
+    "yargs": "^17.7.2",
+    "chalk": "^4.1.2",
+    "inquirer": "^8.2.6"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
