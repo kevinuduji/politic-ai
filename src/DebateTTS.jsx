@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./DebateTTS.css";
+import JSZip from "jszip";
 
 // Lazy load DialogueGenerator to avoid initialization issues
 let dialogueGenerator = null;
@@ -253,14 +254,92 @@ export default function DebateTTS() {
   }
 
   function exportJSON() {
-    const data = JSON.stringify(debate, null, 2);
-    const blob = new Blob([data], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${debate.debateId}.json`;
-    a.click();
-    URL.revokeObjectURL(url);
+    // Create separate data structures for Side A and Side B
+    const sideAData = {
+      debateId: debate.debateId,
+      topic: debate.topic,
+      sideName: debate.sideAName,
+      position: "FOR",
+      rounds: [],
+    };
+
+    const sideBData = {
+      debateId: debate.debateId,
+      topic: debate.topic,
+      sideName: debate.sideBName,
+      position: "AGAINST",
+      rounds: [],
+    };
+
+    // Process each round and subround
+    debate.rounds.forEach((round) => {
+      const sideARound = {
+        roundNumber: round.roundNumber,
+        roundTopic: round.topic,
+        subrounds: [],
+      };
+
+      const sideBRound = {
+        roundNumber: round.roundNumber,
+        roundTopic: round.topic,
+        subrounds: [],
+      };
+
+      round.subrounds.forEach((subround) => {
+        // Add Side A subround if it has text
+        if (subround.sides.A.text) {
+          sideARound.subrounds.push({
+            subroundNumber: subround.subroundNumber,
+            description: subround.description,
+            type: subround.type,
+            response: subround.sides.A.text,
+            speakerLabel: subround.sides.A.speakerLabel,
+          });
+        }
+
+        // Add Side B subround if it has text
+        if (subround.sides.B.text) {
+          sideBRound.subrounds.push({
+            subroundNumber: subround.subroundNumber,
+            description: subround.description,
+            type: subround.type,
+            response: subround.sides.B.text,
+            speakerLabel: subround.sides.B.speakerLabel,
+          });
+        }
+      });
+
+      // Only add rounds that have subrounds with responses
+      if (sideARound.subrounds.length > 0) {
+        sideAData.rounds.push(sideARound);
+      }
+      if (sideBRound.subrounds.length > 0) {
+        sideBData.rounds.push(sideBRound);
+      }
+    });
+
+    // Create ZIP file
+    const zip = new JSZip();
+
+    // Add JSON files to ZIP
+    zip.file(
+      `${debate.debateId}_SideA_${debate.sideAName}.json`,
+      JSON.stringify(sideAData, null, 2)
+    );
+    zip.file(
+      `${debate.debateId}_SideB_${debate.sideBName}.json`,
+      JSON.stringify(sideBData, null, 2)
+    );
+
+    // Generate and download ZIP
+    zip.generateAsync({ type: "blob" }).then(function (content) {
+      const url = URL.createObjectURL(content);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `${debate.debateId}_debate_responses.zip`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
   }
 
   async function clearCacheAndReset() {
