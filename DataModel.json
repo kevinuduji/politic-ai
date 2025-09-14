@@ -1,0 +1,31 @@
+{
+  "debateId": "debate_xxx",
+  "topic": "Main topic of discussion",
+  "industryA": "Industry A (e.g., AI Ethics for Media)",
+  "industryB": "Industry B (e.g., Content Monetization)",
+  "rounds": [
+    {
+      "roundNumber": 1,
+      "title": "Round title (e.g., Opening claims)",
+      "subrounds": [
+        {
+          "subroundNumber": 1,
+          "side": "A",
+          "speakerLabel": "Prof. A — AI Ethics",
+          "text": "Full generated text (~40–60s).",
+          "wordCount": 120,
+          "audioUrl": null,
+          "createdAt": "2025-09-12T09:00:00Z",
+          "updatedAt": "2025-09-12T09:01:00Z"
+        },
+        {
+          "subroundNumber": 1,
+          "side": "B",
+          "speakerLabel": "Prof. B — Monetization",
+          "text": "...",
+          "audioUrl": null
+        }
+      ]
+    }
+  ]
+}
