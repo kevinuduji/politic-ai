@@ -6,7 +6,9 @@ let dialogueGenerator = null;
 async function getDialogueGenerator() {
   if (!dialogueGenerator) {
     try {
-      const { DialogueGenerator } = await import("../DialogueGenerator");
+      const { DialogueGenerator } = await import(
+        "../components/dialogue-generator/DialogueGenerator"
+      );
       dialogueGenerator = new DialogueGenerator({
         // For React apps, use REACT_APP_ prefixed environment variables
         apiKey:
@@ -65,7 +67,9 @@ export async function makeEmptyDebate({
 } = {}) {
   try {
     // Import DialogueGenerator dynamically to get the createEmptyDebate method
-    const { DialogueGenerator } = await import("../DialogueGenerator");
+    const { DialogueGenerator } = await import(
+      "../components/dialogue-generator/DialogueGenerator"
+    );
     return DialogueGenerator.createEmptyDebate({
       topic,
       roundTopic1,
@@ -180,14 +184,12 @@ export function exportDebateToJSON(debate) {
 }
 
 export function initializeDebateFromStorage() {
-  console.log("Initializing debate state...");
   const stored = localStorage.getItem("debate_demo");
   let storedDebate = null;
 
   if (stored) {
     try {
       storedDebate = JSON.parse(stored);
-      console.log("Loaded stored debate:", storedDebate?.topic);
       // Check if the stored debate has the old structure (5 subrounds instead of 10)
       if (
         storedDebate.rounds &&
@@ -197,7 +199,6 @@ export function initializeDebateFromStorage() {
         // Clear old structure and create new one
         localStorage.removeItem("debate_demo");
         storedDebate = null;
-        console.log("Cleared old debate structure");
       }
     } catch (error) {
       console.error("Error parsing stored debate:", error);
@@ -216,10 +217,9 @@ export function initializeDebateFromStorage() {
     roundTopic3: "Round 3 Topic",
     sideAName: "Supporting",
     sideBName: "Opposing",
-    rounds: [],
+    rounds: [], // Empty rounds array - will trigger configuration
   };
 
-  console.log("Using debate:", storedDebate?.topic || fallback.topic);
   return storedDebate || fallback;
 }
 

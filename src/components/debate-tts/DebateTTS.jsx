@@ -13,14 +13,18 @@ import {
 } from "../../utils/debateUtils";
 
 export default function DebateTTS() {
-  console.log("DebateTTS component rendering...");
-
   // Initialize with a simple fallback structure
   const [debate, setDebate] = useState(() => {
-    return initializeDebateFromStorage();
+    const stored = initializeDebateFromStorage();
+    return stored;
   });
 
-  const [isConfiguring, setIsConfiguring] = useState(true);
+  const [isConfiguring, setIsConfiguring] = useState(() => {
+    // Check if we have a valid debate with rounds - if not, show config
+    const stored = initializeDebateFromStorage();
+    const hasValidRounds = stored && stored.rounds && stored.rounds.length > 0;
+    return !hasValidRounds;
+  });
   const [config, setConfig] = useState({
     topic: "",
     roundTopic1: "",
@@ -114,14 +118,15 @@ export default function DebateTTS() {
   async function clearCacheAndReset() {
     clearDebateFromStorage();
     const newDebate = await makeEmptyDebate({
-      topic: "",
-      roundTopic1: "",
-      roundTopic2: "",
-      roundTopic3: "",
-      sideAName: "",
-      sideBName: "",
+      topic: "Sample Debate Topic",
+      roundTopic1: "Opening Arguments",
+      roundTopic2: "Rebuttals",
+      roundTopic3: "Closing Statements",
+      sideAName: "Pro",
+      sideBName: "Con",
     });
     setDebate(newDebate);
+    setIsConfiguring(false); // Skip config and go straight to debate view
   }
 
   // Manual generation functions
@@ -273,16 +278,32 @@ export default function DebateTTS() {
       />
 
       <div className="rounds-container">
-        {debate.rounds.map((round, roundIdx) => (
-          <Round
-            key={roundIdx}
-            round={round}
-            roundIdx={roundIdx}
-            debate={debate}
-            onGenerate={handleGenerate}
-            onEdit={handleEdit}
-          />
-        ))}
+        {debate.rounds && debate.rounds.length > 0 ? (
+          debate.rounds.map((round, roundIdx) => (
+            <Round
+              key={roundIdx}
+              round={round}
+              roundIdx={roundIdx}
+              debate={debate}
+              onGenerate={handleGenerate}
+              onEdit={handleEdit}
+            />
+          ))
+        ) : (
+          <div
+            style={{
+              padding: "20px",
+              textAlign: "center",
+              color: "#666",
+              backgroundColor: "#f8f9fa",
+              border: "1px solid #dee2e6",
+              borderRadius: "8px",
+            }}
+          >
+            No rounds configured. Click "Clear Cache & Reset" to create a sample
+            debate, or "New Debate" to configure your own.
+          </div>
+        )}
       </div>
     </div>
   );
