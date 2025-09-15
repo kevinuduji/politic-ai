@@ -56,11 +56,27 @@ const DEBATE_STRUCTURE = [
       { side: "B", type: "closing", description: "Side B Final Closing" },
     ],
   },
+  {
+    roundNumber: 4,
+    title: "Reflection",
+    subrounds: [
+      {
+        side: "A",
+        type: "reflection",
+        description: "Side A Reflection on Opponent's Strongest Points",
+      },
+      {
+        side: "B",
+        type: "reflection",
+        description: "Side B Reflection on Opponent's Strongest Points",
+      },
+    ],
+  },
 ];
 
 /**
  * Get context-aware guidance for the subround type
- * Only handles 3 types: opening, counter, closing
+ * Only handles 4 types: opening, counter, closing, reflection
  */
 function getTaskInstructions(subroundType) {
   switch (subroundType) {
@@ -70,6 +86,8 @@ function getTaskInstructions(subroundType) {
       return "Respond to your opponent's perspective. Challenge their arguments, present evidence that contradicts their position, or offer alternative viewpoints.";
     case "closing":
       return "This is a concluding moment in the debate. Summarize your key points and make your final appeal.";
+    case "reflection":
+      return "Reflect thoughtfully on your opponent's strongest arguments during this debate. Acknowledge the points that challenged your position most effectively and discuss what made them difficult to counter. Maintain a respectful tone while sharing your honest assessment.";
     default:
       // Fallback for any unexpected types
       return "Continue the debate naturally";

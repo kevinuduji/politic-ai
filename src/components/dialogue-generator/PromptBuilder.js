@@ -5,7 +5,7 @@
  * political debate responses, including system prompts and contextual user prompts.
  */
 
-const { getTaskInstructions } = require('./DebateStructure');
+const { getTaskInstructions } = require("./DebateStructure");
 
 // System prompt - simple and clear for natural responses
 const SYSTEM_PROMPT = `
@@ -70,7 +70,39 @@ class PromptBuilder {
     // Define the specific task for this subround type
     const taskInstructions = getTaskInstructions(subroundType);
 
-    // Build the complete prompt
+    // Special handling for reflection subrounds
+    if (subroundType === "reflection") {
+      const prompt = `${USER_PROMPT_TEMPLATE.replace("[TOPIC]", topic)}
+
+You have just completed a debate on ${topic}, where you argued ${position} this issue.
+
+Context: ${taskInstructions}
+
+${debateHistoryText}
+
+Now, step back and reflect on the entire debate. Generate a thoughtful reflection that:
+1. Acknowledges the strongest arguments your opponent made
+2. Discusses which points were most challenging for your side to counter and why
+3. Shows intellectual honesty about the complexity of the issue
+4. Maintains the same respectful tone you've used throughout the debate
+5. Uses clear, accessible language
+6. Demonstrates that you genuinely listened to and considered your opponent's perspective
+7. Is concise and no more than 200 words
+8. Does not change your overall position, but shows you understand the merit in some opposing points
+
+Your reflection:`;
+
+      return {
+        prompt,
+        topic,
+        stance,
+        speakerName,
+        opponentName,
+        subroundType,
+      };
+    }
+
+    // Build the complete prompt for non-reflection subrounds
     const prompt = `${USER_PROMPT_TEMPLATE.replace("[TOPIC]", topic)}
 
 You are ${stance} the position on ${topic}. You are ${position} this issue.

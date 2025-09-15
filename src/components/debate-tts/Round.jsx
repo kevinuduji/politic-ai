@@ -11,7 +11,7 @@ export default function Round({ round, roundIdx, debate, onGenerate, onEdit }) {
             round.subrounds.filter((sr) => sr.sides[sr.assignedSide].text)
               .length
           }{" "}
-          / 10 subrounds completed
+          / {round.subrounds.length} subrounds completed
         </span>
       </summary>
 
