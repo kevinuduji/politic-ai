@@ -240,6 +240,6 @@ For urgent matters, please contact the repository maintainers directly.
 
 ---
 
-**Made with ❤️ by [Kevin Uduji](https://github.com/kevinuduji)**
+**Made by [Kevin Uduji](https://github.com/kevinuduji)**
 
 _Empowering political discourse through AI technology_
