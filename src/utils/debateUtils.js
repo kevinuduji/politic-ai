@@ -162,22 +162,23 @@ export function exportDebateToJSON(debate) {
   // Create ZIP file
   const zip = new JSZip();
 
-  // Add JSON files to ZIP
-  zip.file(
-    `${debate.debateId}_SideA_${debate.sideAName}.json`,
-    JSON.stringify(sideAData, null, 2)
-  );
-  zip.file(
-    `${debate.debateId}_SideB_${debate.sideBName}.json`,
-    JSON.stringify(sideBData, null, 2)
-  );
+  // Add JSON files to ZIP with new naming scheme
+  zip.file("supporting.json", JSON.stringify(sideAData, null, 2));
+  zip.file("opposing.json", JSON.stringify(sideBData, null, 2));
 
-  // Generate and download ZIP
+  // Create a clean filename from the topic
+  const cleanTopic = debate.topic
+    .replace(/[^a-zA-Z0-9\s]/g, "") // Remove special characters
+    .replace(/\s+/g, "_") // Replace spaces with underscores
+    .toLowerCase() // Convert to lowercase
+    .substring(0, 50); // Limit length to 50 characters
+
+  // Generate and download ZIP with topic-based filename
   zip.generateAsync({ type: "blob" }).then(function (content) {
     const url = URL.createObjectURL(content);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `${debate.debateId}_debate_responses.zip`;
+    a.download = `${cleanTopic}_debate.zip`;
     a.click();
     URL.revokeObjectURL(url);
   });
