@@ -3,7 +3,9 @@
  */
 
 require("dotenv").config();
-const { DialogueGenerator } = require("./DialogueGenerator");
+const {
+  DialogueGenerator,
+} = require("./components/dialogue-generator/DialogueGenerator");
 
 async function testCerebras() {
   const apiKey = process.env.CEREBRAS_API_KEY;

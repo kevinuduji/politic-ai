@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import DebateTTS from "./DebateTTS";
+import DebateTTS from "./components/debate-tts/DebateTTS";
 import ErrorBoundary from "./ErrorBoundary";
 
 function App() {
