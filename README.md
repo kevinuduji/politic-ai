@@ -202,20 +202,12 @@ We welcome contributions to Politic-AI! Here's how you can help:
 - Test your changes thoroughly before submitting
 - Update documentation if you're changing functionality
 
-### Areas for Contribution
-
-- 🐛 Bug fixes and performance improvements
-- ✨ New features and debate formats
-- 🎨 UI/UX enhancements
-- 📚 Documentation improvements
-- 🧪 Test coverage expansion
-
 ## ⚠️ Disclaimer
 
 This tool generates AI-based political debates for **educational and entertainment purposes only**. Please note:
 
 - Generated content does not represent the views or opinions of the developers
-- Debates are created by AI and may not reflect real-world political positions accurately
+- AI creates debates and may not reflect real-world political positions accurately
 - Content should not be used as a primary source for political decision-making or research
 - AI-generated arguments may contain biases present in training data
 - Users should critically evaluate all generated content and seek multiple sources for important topics
@@ -235,8 +227,6 @@ This project is private and proprietary. All rights reserved.
 - **Issues**: Open an issue on the [GitHub repository](https://github.com/kevinuduji/politic-ai/issues)
 - **Feature Requests**: Submit via GitHub issues with the "enhancement" label
 - **Questions**: Check existing issues or create a new discussion
-
-For urgent matters, please contact the repository maintainers directly.
 
 ---
 
