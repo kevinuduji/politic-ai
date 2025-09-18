@@ -4,19 +4,19 @@ export default function ConfigPanel({ config, setConfig, onSubmit, onCancel }) {
   const handleSubmit = () => {
     // Validate required fields
     if (!config.topic.trim()) {
-      alert("Please enter a main topic");
+      alert("Please enter a main topic and question");
       return;
     }
     if (!config.roundTopic1.trim()) {
-      alert("Please enter a topic for Round 1");
+      alert("Please enter a QUESTION for Round 1");
       return;
     }
     if (!config.roundTopic2.trim()) {
-      alert("Please enter a topic for Round 2");
+      alert("Please enter a QUESTION for Round 2");
       return;
     }
     if (!config.roundTopic3.trim()) {
-      alert("Please enter a topic for Round 3");
+      alert("Please enter a QUESTION for Round 3");
       return;
     }
     if (!config.sideAName.trim()) {

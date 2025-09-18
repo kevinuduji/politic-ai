@@ -123,7 +123,7 @@ class CerebrasClient {
   generateFallbackResponse(context = {}) {
     const { stance = "support", topic = "this issue" } = context;
 
-    // Simple fallback response
+    // Simple fallback response that follows the guidelines
     return `I ${stance} this position on ${topic}. This is an important issue that needs careful thought and respectful discussion between all people involved.`;
   }
 }

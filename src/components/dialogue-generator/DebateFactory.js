@@ -5,7 +5,7 @@
  * including the setup of rounds, subrounds, and side assignments.
  */
 
-const { DEBATE_STRUCTURE } = require('./DebateStructure');
+const { DEBATE_STRUCTURE } = require("./DebateStructure");
 
 /**
  * DebateFactory creates and configures debate structures
@@ -23,17 +23,38 @@ class DebateFactory {
     sideBName = "Opposing",
   } = {}) {
     const rounds = DEBATE_STRUCTURE.map((roundStructure, index) => {
-      const roundTopics = [roundTopic1, roundTopic2, roundTopic3];
-      const specificTopic =
-        roundTopics[index] && roundTopics[index].trim()
-          ? roundTopics[index]
-          : `${topic} - ${roundStructure.title}`;
+      // Handle topic mapping: Round 1 -> roundTopic1, Intermission -> topic, Round 2 -> roundTopic2, Round 3 -> roundTopic3, Post-Debate -> topic
+      let specificTopic, roundTitle;
 
-      // Use the specific round topic as the title if provided, otherwise use the default
-      const roundTitle =
-        roundTopics[index] && roundTopics[index].trim()
-          ? roundTopics[index]
-          : roundStructure.title;
+      if (roundStructure.title === "Intermission") {
+        // Intermission uses the general topic
+        specificTopic = topic;
+        roundTitle = "Intermission";
+      } else if (roundStructure.title === "Post-Debate") {
+        // Post-Debate uses the general topic
+        specificTopic = topic;
+        roundTitle = "Post-Debate";
+      } else {
+        // Map Round 1 -> roundTopic1, Round 2 -> roundTopic2, Round 3 -> roundTopic3
+        const roundTopics = [roundTopic1, roundTopic2, roundTopic3];
+        const roundIndex =
+          roundStructure.title === "Round 1"
+            ? 0
+            : roundStructure.title === "Round 2"
+            ? 1
+            : 2;
+
+        specificTopic =
+          roundTopics[roundIndex] && roundTopics[roundIndex].trim()
+            ? roundTopics[roundIndex]
+            : `${topic} - ${roundStructure.title}`;
+
+        // Use the specific round topic as the title if provided, otherwise use the default
+        roundTitle =
+          roundTopics[roundIndex] && roundTopics[roundIndex].trim()
+            ? roundTopics[roundIndex]
+            : roundStructure.title;
+      }
 
       return {
         roundNumber: roundStructure.roundNumber,
@@ -83,19 +104,19 @@ class DebateFactory {
    */
   static validateDebateConfig(config) {
     const { topic, sideAName, sideBName } = config;
-    
-    if (!topic || typeof topic !== 'string' || topic.trim() === '') {
-      throw new Error('Topic is required and must be a non-empty string');
+
+    if (!topic || typeof topic !== "string" || topic.trim() === "") {
+      throw new Error("Topic is required and must be a non-empty string");
     }
-    
-    if (sideAName && typeof sideAName !== 'string') {
-      throw new Error('sideAName must be a string');
+
+    if (sideAName && typeof sideAName !== "string") {
+      throw new Error("sideAName must be a string");
     }
-    
-    if (sideBName && typeof sideBName !== 'string') {
-      throw new Error('sideBName must be a string');
+
+    if (sideBName && typeof sideBName !== "string") {
+      throw new Error("sideBName must be a string");
     }
-    
+
     return true;
   }
 

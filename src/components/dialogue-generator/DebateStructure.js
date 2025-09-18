@@ -5,8 +5,8 @@
  * Handles the configuration for 3 rounds with specific response types.
  */
 
-// Debate structure: 3 rounds with 10 subrounds each (5 per debater)
-// Only 3 types of responses: opening, counter, closing
+// Debate structure: 3 rounds with intermission after Round 1
+// Only 4 types of responses: opening, counter, closing, reflection
 const DEBATE_STRUCTURE = [
   {
     roundNumber: 1,
@@ -26,6 +26,22 @@ const DEBATE_STRUCTURE = [
   },
   {
     roundNumber: 2,
+    title: "Intermission",
+    subrounds: [
+      {
+        side: "A",
+        type: "reflection",
+        description: "Side A Reflection on Opponent's Strongest Points",
+      },
+      {
+        side: "B",
+        type: "reflection",
+        description: "Side B Reflection on Opponent's Strongest Points",
+      },
+    ],
+  },
+  {
+    roundNumber: 3,
     title: "Round 2",
     subrounds: [
       { side: "A", type: "opening", description: "Side A Opening Statement" },
@@ -41,7 +57,7 @@ const DEBATE_STRUCTURE = [
     ],
   },
   {
-    roundNumber: 3,
+    roundNumber: 4,
     title: "Round 3",
     subrounds: [
       { side: "A", type: "opening", description: "Side A Opening Statement" },
@@ -57,18 +73,18 @@ const DEBATE_STRUCTURE = [
     ],
   },
   {
-    roundNumber: 4,
-    title: "Reflection",
+    roundNumber: 5,
+    title: "Post-Debate",
     subrounds: [
       {
         side: "A",
-        type: "reflection",
-        description: "Side A Reflection on Opponent's Strongest Points",
+        type: "post-debate",
+        description: "Side A Final Remarks - Additional Points",
       },
       {
         side: "B",
-        type: "reflection",
-        description: "Side B Reflection on Opponent's Strongest Points",
+        type: "post-debate",
+        description: "Side B Final Remarks - Additional Points",
       },
     ],
   },
@@ -76,7 +92,7 @@ const DEBATE_STRUCTURE = [
 
 /**
  * Get context-aware guidance for the subround type
- * Only handles 4 types: opening, counter, closing, reflection
+ * Only handles 5 types: opening, counter, closing, reflection, post-debate
  */
 function getTaskInstructions(subroundType) {
   switch (subroundType) {
@@ -88,6 +104,8 @@ function getTaskInstructions(subroundType) {
       return "This is a concluding moment in the debate. Summarize your key points and make your final appeal.";
     case "reflection":
       return "Reflect thoughtfully on your opponent's strongest arguments during this debate. Acknowledge the points that challenged your position most effectively and discuss what made them difficult to counter. Maintain a respectful tone while sharing your honest assessment.";
+    case "post-debate":
+      return "Now that the formal debate has concluded, share any additional information or arguments you wish you had included during the debate. Begin by explicitly stating what you wish you had mentioned or forgot to include, then elaborate on those points.";
     default:
       // Fallback for any unexpected types
       return "Continue the debate naturally";
